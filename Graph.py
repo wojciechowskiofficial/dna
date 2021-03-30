@@ -47,19 +47,26 @@ class Graph:
         :param b: second vertex
         :return: computed metric value
         '''
-        first = a.value
-        second = b.value[::-1]
+        first = a.value[::-1]
+        second = b.value
         # iterator i is also an overlap value
         i = 0
         while True:
             if first[i] == second[i]:
                 i += 1
+                # TODO: problem degradation for no errors assumption.
+                # repetition treated as no match at all
+                # remove below if statement after implementing this part of problem
+                if i == self.vertex_value_length:
+                    return -1
             else:
                 break
+
         # returns -1 if no match at all
         if i == 0:
             return -1
         else:
+            print(a.value, b.value, i)
             return self.vertex_value_length - i
     def create_graph_matrix(self):
         '''
@@ -78,3 +85,4 @@ class Graph:
                 self._graph_matrix[row].append(self._compute_metric(self.oligonucleotides_list[row], self.oligonucleotides_list[col]))
                 if row == col:
                     self._graph_matrix[row][col] = -1
+        print('graph creation finished with success')
