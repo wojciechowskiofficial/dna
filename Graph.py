@@ -25,7 +25,7 @@ class Graph:
     def __str__(self):
         self._check_graph_matrix_empty()
         print('\nGRAPH MATRIX DISPLAY')
-        for row in tqdm(range(self.vertices_no)):
+        for row in range(self.vertices_no):
             for col in range(self.vertices_no):
                 print(self._graph_matrix[row][col], end='\t')
             print('')
@@ -90,6 +90,7 @@ class Graph:
                 self._graph_matrix[row].append(self._compute_metric(self.oligonucleotides_list[row], self.oligonucleotides_list[col]))
                 if row == col:
                     self._graph_matrix[row][col] = -1
+        sleep(1)
         print('graph creation finished with success')
     def get_graph_matrix_element(self, i: int, j: int):
         '''
@@ -108,3 +109,11 @@ class Graph:
         :param value: value for graph_matrix[i][j] to be set
         '''
         self._graph_matrix[i][j] = value
+    def get_highest_connection(self, i: int):
+        '''
+        method for getting most optimal connection from current vertex to the next vertex
+        :param i: current vertex id
+        :return: id of highest arc value which comes out of current vertex
+        '''
+        self._check_graph_matrix_empty()
+        return self._graph_matrix[i].index(max(self._graph_matrix[i]))

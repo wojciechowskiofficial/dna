@@ -1,5 +1,6 @@
 from Graph import Graph
 from Solution import Solution
+from random import randint
 
 class DummyGreedy:
     '''
@@ -21,4 +22,13 @@ class DummyGreedy:
         method for running the algorithm
         :return: Solution object
         '''
-        print(self.graph)
+        # 1st step
+        i = randint(0, self.graph.vertices_no - 1)
+        j = randint(0, self.graph.vertices_no - 1)
+        while self.graph.get_graph_matrix_element(i, j) == -1:
+            i = randint(0, self.graph.vertices_no - 1)
+            j = randint(0, self.graph.vertices_no - 1)
+        # 2nd step
+        self.solution.sequence = self.graph.oligonucleotides_list[i].value
+        print(self.graph._graph_matrix[i])
+        print(self.graph.get_highest_connection(i))

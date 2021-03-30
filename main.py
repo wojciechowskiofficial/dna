@@ -1,5 +1,6 @@
 from FileIO import FileIO
 from Graph import Graph
+from DummyGreedy import DummyGreedy
 
 if __name__ == '__main__':
     fileIO = FileIO()
@@ -11,4 +12,5 @@ if __name__ == '__main__':
     graph = Graph()
     graph.add_vertices_list(vertices)
     graph.create_graph_matrix()
-    print(str(graph))
+    greedy = DummyGreedy(graph)
+    greedy.solve()
