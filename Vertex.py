@@ -1,6 +1,6 @@
 class Vertex:
     '''
-    Container for oligonulceotides
+    Container for oligonucleotides
     '''
     def __init__(self):
         self.value = str()

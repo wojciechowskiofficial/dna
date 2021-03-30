@@ -18,7 +18,7 @@ class Graph:
     def __str__(self):
         if not self._graph_matrix:
             raise ValueError('graph matrix not created')
-        print('GRAPH MATRIX\n')
+        print('\nGRAPH MATRIX DISPLAY')
         for row in tqdm(range(self.vertices_no)):
             for col in range(self.vertices_no):
                 print(self._graph_matrix[row][col], end='\t')
@@ -66,7 +66,6 @@ class Graph:
         if i == 0:
             return -1
         else:
-            print(a.value, b.value, i)
             return self.vertex_value_length - i
     def create_graph_matrix(self):
         '''
