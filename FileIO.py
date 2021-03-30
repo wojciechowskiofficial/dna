@@ -2,7 +2,6 @@ import os
 
 class FileIO:
     '''
-
     File input output handler
     '''
     def __init__(self):
