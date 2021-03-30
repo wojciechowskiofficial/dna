@@ -47,6 +47,7 @@ class Graph:
         self.vertex_value_length = len(self.oligonucleotides_list[0].value)
         self.vertices_no = len(self.oligonucleotides_list)
     def _compute_metric(self, a: Vertex, b: Vertex):
+        # TODO: debug this method - cannot reverse first string
         '''
         method for computing metric used for weighting graph's arcs
         :param a: frist vertex
@@ -109,11 +110,11 @@ class Graph:
         :param value: value for graph_matrix[i][j] to be set
         '''
         self._graph_matrix[i][j] = value
-    def get_highest_connection(self, i: int):
+    def get_vertex_neighbours(self, i: int) -> list:
         '''
         method for getting most optimal connection from current vertex to the next vertex
         :param i: current vertex id
         :return: id of highest arc value which comes out of current vertex
         '''
         self._check_graph_matrix_empty()
-        return self._graph_matrix[i].index(max(self._graph_matrix[i]))
+        return self._graph_matrix[i]

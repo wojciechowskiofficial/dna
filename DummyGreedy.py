@@ -17,18 +17,28 @@ class DummyGreedy:
     def __init__(self, graph: Graph):
         self.graph = graph
         self.solution = Solution()
+    def _merge_with_overlap(self, a: str, b: str, overlap: int):
+        return a[:len(a) - overlap] + b
     def solve(self):
         '''
         method for running the algorithm
-        :return: Solution object
         '''
-        # 1st step
         i = randint(0, self.graph.vertices_no - 1)
-        j = randint(0, self.graph.vertices_no - 1)
-        while self.graph.get_graph_matrix_element(i, j) == -1:
-            i = randint(0, self.graph.vertices_no - 1)
-            j = randint(0, self.graph.vertices_no - 1)
-        # 2nd step
+        visited = [i]
         self.solution.sequence = self.graph.oligonucleotides_list[i].value
-        print(self.graph._graph_matrix[i])
-        print(self.graph.get_highest_connection(i))
+        self.solution.id_list.append(i)
+        neighbour_weights = self.graph.get_vertex_neighbours(i)
+        i = neighbour_weights.index(max(neighbour_weights))
+        overlap = self.graph.vertex_value_length - max(neighbour_weights)
+        if set(neighbour_weights) != {-1}:
+            while set(neighbour_weights) != {-1}:
+                visited.append(i)
+                self.solution.overlaps.append(overlap)
+                self.solution.sequence = self._merge_with_overlap(self.solution.sequence, self.graph.oligonucleotides_list[i].value, overlap)
+                self.solution.id_list.append(i)
+                neighbour_weights = self.graph.get_vertex_neighbours(i)
+                i = neighbour_weights.index(max(neighbour_weights))
+                if i in visited:
+                    break
+                else:
+                    overlap = self.graph.vertex_value_length - max(neighbour_weights)
