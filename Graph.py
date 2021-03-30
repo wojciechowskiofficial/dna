@@ -15,9 +15,15 @@ class Graph:
         self.vertices_no = int()
         self.vertex_value_length = int()
         self._graph_matrix = list()
-    def __str__(self):
+    def _check_graph_matrix_empty(self):
+        '''
+        method for reassuring if graph matrix is already created
+        :raises: ValueError if graph matrix is not yet created
+        '''
         if not self._graph_matrix:
             raise ValueError('graph matrix not created')
+    def __str__(self):
+        self._check_graph_matrix_empty()
         print('\nGRAPH MATRIX DISPLAY')
         for row in tqdm(range(self.vertices_no)):
             for col in range(self.vertices_no):
@@ -85,3 +91,20 @@ class Graph:
                 if row == col:
                     self._graph_matrix[row][col] = -1
         print('graph creation finished with success')
+    def get_graph_matrix_element(self, i: int, j: int):
+        '''
+        getter method for graph matrix elements
+        :param i: row
+        :param j: column
+        :return: graph_matrix[i][j] value
+        '''
+        self._check_graph_matrix_empty()
+        return self._graph_matrix[i][j]
+    def set_graph_matrix_element(self, i: int, j: int, value: int):
+        '''
+        setter method for graph matrix elements
+        :param i: row
+        :param j: column
+        :param value: value for graph_matrix[i][j] to be set
+        '''
+        self._graph_matrix[i][j] = value
