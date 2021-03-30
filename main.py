@@ -10,3 +10,4 @@ if __name__ == '__main__':
     vertices = fileIO.read_file(fileIO.get_absolute_path(lista))
     graph = Graph()
     graph.add_vertices_list(vertices)
+    graph.create_graph_matrix()
