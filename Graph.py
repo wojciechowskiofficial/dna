@@ -9,7 +9,7 @@ class Graph:
     Vertices are oligonucleotides
     Arcs are metric values computed between two vertices
     metric(a, b) = { (length of nucleotides - overlap) if overlap is not equal to 0
-                   { -1 if there is no overlap
+                   { 0 if there is no overlap
     '''
     def __init__(self):
         self.oligonucleotides_list = list()
@@ -87,9 +87,6 @@ class Graph:
         for row in tqdm(range(self.vertices_no)):
             for col in range(self.vertices_no):
                 self._graph_matrix[row][col] = self._compute_metric(self.oligonucleotides_list[row], self.oligonucleotides_list[col])
-                if row == col:
-                    self._graph_matrix[row][col] == -1
-                # TODO: figure out what to do with special connections i.e. not matching or identity connections
         print('graph creation finished with success')
     def get_graph_matrix_element(self, i: int, j: int):
         '''
