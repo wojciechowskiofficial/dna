@@ -12,6 +12,7 @@ if __name__ == '__main__':
     graph = Graph()
     graph.add_vertices_list(vertices)
     graph.create_graph_matrix()
+    print(graph)
     greedy = DummyGreedy(graph)
     greedy.solve()
     print(str(greedy.graph))
