@@ -16,3 +16,13 @@ class Solution:
         self.id_list = list()
         self.sequence = str()
         self.overlaps = list()
+    def concatenate(self, seq: str, direction: str):
+        '''
+        method for directional sequence concatenation
+        :param seq: str new sequence to be appended
+        :param direction: str 'right' or 'left'
+        '''
+        if direction == 'right':
+            self.sequence = self.sequence + seq
+        elif direction == 'left':
+            self.sequence = seq + self.sequence
