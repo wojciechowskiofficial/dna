@@ -128,6 +128,12 @@ class Graph:
                  oligonucleotide because we look for arc that goes into 0th from 4th
         '''
         if direction == 'in':
-            return self.vertex_value_length - self.get_graph_matrix_element(next, current)
+            if self.get_graph_matrix_element(next, current) == 0:
+                return 0
+            else:
+                return self.vertex_value_length - self.get_graph_matrix_element(next, current)
         elif direction == 'out':
-            return self.vertex_value_length - self.get_graph_matrix_element(current, next)
+            if self.get_graph_matrix_element(current, next) == 0:
+                return 0
+            else:
+                return self.vertex_value_length - self.get_graph_matrix_element(current, next)
