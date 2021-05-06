@@ -63,7 +63,7 @@ class Graph:
         # length of oligonucleotides
         l = self.vertex_value_length
         # increasing iterator being the overlap value
-        i = l - 1
+        i = 1
         # while there can be an overlap try to find it
         while i < l:
             # cut everything outside of potential overlap
@@ -86,7 +86,8 @@ class Graph:
         self._graph_matrix = np.empty(shape=(self.vertices_no, self.vertices_no), dtype=np.intc)
         for row in tqdm(range(self.vertices_no)):
             for col in range(self.vertices_no):
-                self._graph_matrix[row][col] = self._compute_metric(self.oligonucleotides_list[row], self.oligonucleotides_list[col])
+                self._graph_matrix[row][col] = self._compute_metric(self.oligonucleotides_list[row],
+                                                                    self.oligonucleotides_list[col])
         print('graph creation finished with success')
     def get_graph_matrix_element(self, i: int, j: int):
         '''
@@ -105,11 +106,15 @@ class Graph:
         :param value: value for graph_matrix[i][j] to be set
         '''
         self._graph_matrix[i][j] = value
-    def get_vertex_neighbours(self, i: int) -> list:
+    def get_vertex_neighbours(self, i: int, direction: str) -> list:
         '''
-        method for getting most optimal connection from current vertex to the next vertex
+        method for getting vertex in or out neighbours
         :param i: current vertex id
-        :return: id of highest arc value which comes out of current vertex
+        :param direction: str 'in' or 'out'
+        :return: array of arcs (vertex neighbours of specified directioon)
         '''
         self._check_graph_matrix_empty()
-        return self._graph_matrix[i,:]
+        if direction == 'in':
+            return self._graph_matrix[:, i]
+        elif direction == 'out':
+            return self._graph_matrix[i,:]
