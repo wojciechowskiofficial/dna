@@ -19,18 +19,39 @@ class Solution:
         self.id_list = list()
         self.sequence = str()
         self.overlaps = list()
+    def __str__(self):
+        ret = 'IDS \n'
+        ret += str(self.id_list)
+        ret += '\n'
+        ret += 'SEQUENCE \n'
+        ret += self.sequence
+        ret += '\n'
+        ret += 'OVERLAPS \n'
+        ret += str(self.overlaps)
+        return ret
+    def __repr__(self):
+        self.__str__()
     def _validate_direction(self):
-        if self.direction not in {'left', 'right'}:
+        if self.direction not in {'in', 'out'}:
             raise ValueError('invalid direction')
     def add_id(self, id: int):
         '''
-        method for adding vertex id to id_list
+        method for adding vertex id to sef.id_list
         :param id: int new vertex id
         '''
-        if self.direction == 'left':
+        if self.direction == 'in':
             self.id_list.insert(0, id)
-        elif self.direction == 'right':
+        elif self.direction == 'out':
             self.id_list.append(id)
+    def add_overlap(self, overlap: int):
+        '''
+        method for adding overlap to self.overlaps
+        :param overlap: int new overlap
+        '''
+        if self.direction == 'in':
+            self.overlaps.insert(0, overlap)
+        elif self.direction == 'out':
+            self.overlaps.append(overlap)
     def concatenate_sequence(self, seq: str, overlap: int, direction: str):
         '''
         method for directional sequence concatenation
@@ -43,10 +64,3 @@ class Solution:
             self.sequence = self.sequence + seq[overlap]
         elif direction == 'left':
             self.sequence = seq[:len(seq) - overlap] + self.sequence
-    def add_overlap(self, current: int, next: int, direction: str):
-        '''
-        method for adding overlap
-        :param metric: int metric value / arc value
-        '''
-        # TODO: not done - implement
-        pass
