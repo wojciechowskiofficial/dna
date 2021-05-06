@@ -24,10 +24,10 @@ class Greedy:
         :param queue: np.array of queued neighbours
         :return: bool True if there are valid candidates left else False
         '''
-        if np.any(queue) not in visited:
-            return True
-        else:
-            return False
+        for i in range(queue.shape[0]):
+            if queue[i] not in visited:
+                return True
+        return False
     def _get_best_candidate(self, visited: set, queue: np.array):
         '''
         method for getting next best candidate inside subgreedy loop
@@ -52,7 +52,6 @@ class Greedy:
         visited = {v}
         # ensure while loop entrance
         candidates_queue = self._queue_candidates(v, direction)
-        print(candidates_queue)
         is_valid_candidates = self._valid_candidates_left(visited, candidates_queue)
         # main loop
         while is_valid_candidates:
@@ -68,5 +67,5 @@ class Greedy:
             # create candidates queue for new current vertex
             candidates_queue = self._queue_candidates(current_vertex, direction)
             # check if loop should continue
-            is_valid_candidates = self._valid_candidates_left(visited, direction)
+            is_valid_candidates = self._valid_candidates_left(visited, candidates_queue)
         return solution
