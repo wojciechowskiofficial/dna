@@ -118,7 +118,7 @@ class Graph:
             return self._graph_matrix[:, i]
         elif direction == 'out':
             return self._graph_matrix[i,:]
-    def get_overlap(self, current: int, next: int, direction: str) -> int:
+    def compute_overlap(self, current: int, next: int, direction: str) -> int:
         '''
         method for getting directional overlap between current and next vertex
         :param current: int current vertex
