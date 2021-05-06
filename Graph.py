@@ -118,3 +118,16 @@ class Graph:
             return self._graph_matrix[:, i]
         elif direction == 'out':
             return self._graph_matrix[i,:]
+    def get_overlap(self, current: int, next: int, direction: str) -> int:
+        '''
+        method for getting directional overlap between current and next vertex
+        :param current: int current vertex
+        :param next: int next vertex
+        :param direction: str 'in' or 'out' direction
+        :return: overlap value i.e. (0, 4, 'in') returns overlap between 4th and 0th
+                 oligonucleotide because we look for arc that goes into 0th from 4th
+        '''
+        if direction == 'in':
+            return self.vertex_value_length - self.get_graph_matrix_element(next, current)
+        elif direction == 'out':
+            return self.vertex_value_length - self.get_graph_matrix_element(current, next)
