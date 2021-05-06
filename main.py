@@ -17,7 +17,7 @@ if __name__ == '__main__':
     graph.create_graph_matrix()
     print(graph)
     greedy = Greedy(graph)
-
+    print(greedy.solve_subgreedy(0, 'in'))
     #greedy = DummyGreedy(graph)
     #greedy.solve()
     #print(str(greedy.graph))

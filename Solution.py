@@ -52,15 +52,13 @@ class Solution:
             self.overlaps.insert(0, overlap)
         elif self.direction == 'out':
             self.overlaps.append(overlap)
-    def concatenate_sequence(self, seq: str, overlap: int, direction: str):
+    def add_sequence(self, seq: str, overlap: int):
         '''
         method for directional sequence concatenation
         :param seq: str new sequence to be appended
         :param overlap: int overlap
-        :param direction: str 'right' or 'left'
         '''
-        # TODO: not done - implement
-        if direction == 'right':
-            self.sequence = self.sequence + seq[overlap]
-        elif direction == 'left':
+        if self.direction == 'in':
             self.sequence = seq[:len(seq) - overlap] + self.sequence
+        elif self.direction == 'out':
+            self.sequence = self.sequence + seq[overlap:]

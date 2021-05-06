@@ -8,7 +8,6 @@ class Greedy:
     '''
     def __init__(self, graph: Graph):
         self.graph = graph
-        self.solution = Solution()
     def _queue_candidates(self, v: int, direction: str):
         '''
         method for createing a queue array of candidate vertices to be appended
@@ -45,7 +44,7 @@ class Greedy:
         :param direction: desired direction ('in' or 'out')
         '''
         # create solution object and init it with v
-        solution = Solution()
+        solution = Solution(direction)
         solution.id_list.append(v)
         solution.sequence = self.graph.oligonucleotides_list[v].value
         # create necessary variables and data structures
@@ -54,14 +53,17 @@ class Greedy:
         candidates_queue = self._queue_candidates(v, direction)
         is_valid_candidates = self._valid_candidates_left(visited, candidates_queue)
         # main loop
+        current_vertex = v
         while is_valid_candidates:
             # get best candidate
             next_vertex = self._get_best_candidate(visited, candidates_queue)
             # add this candidate vertex to visited
             visited.add(next_vertex)
             # update solution object
-            solution.id_list.append(next_vertex)
-            # TODO: handle directional sequence concatenation and overlapping stuff in Solution class
+            overlap = self.graph.compute_overlap(current_vertex, next_vertex, direction)
+            solution.add_id(next_vertex)
+            solution.add_overlap(overlap)
+            solution.add_sequence(self.graph.oligonucleotides_list[next_vertex].value, overlap)
             # update current vertex with best candidate vertex
             current_vertex = next_vertex
             # create candidates queue for new current vertex
