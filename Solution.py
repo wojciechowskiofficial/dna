@@ -32,7 +32,7 @@ class Solution:
     def __repr__(self):
         self.__str__()
     def _validate_direction(self):
-        if self.direction not in {'in', 'out'}:
+        if self.direction not in {'in', 'out', 'bidirectional'}:
             raise ValueError('invalid direction')
     def add_id(self, id: int):
         '''
