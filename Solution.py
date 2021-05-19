@@ -7,7 +7,7 @@ class Solution:
         *sequence as string
         *overlaps as list
     '''
-    def __init__(self, direction: str):
+    def __init__(self, direction: str, vertex_value_length: int):
         '''
         id_list is a list of visited vertices in the order of visiting
         sequence is resulting DNA sequence
@@ -15,6 +15,7 @@ class Solution:
         with it's elements being no overlaping letters between vertices
         '''
         self.direction = direction
+        self.vertex_value_length = vertex_value_length
         self._validate_direction()
         self.id_list = list()
         self.sequence = str()

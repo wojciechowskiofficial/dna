@@ -16,5 +16,4 @@ if __name__ == '__main__':
     graph.add_vertices_list(vertices)
     graph.create_graph_matrix()
     greedy = Greedy(graph)
-    print(graph)
-    print(greedy.solve_greedy())
+    greedy.solve_greedy()

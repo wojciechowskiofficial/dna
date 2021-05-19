@@ -1,6 +1,7 @@
 from Graph import Graph
 from Solution import Solution
 import numpy as np
+from OptimizationUtils import OptimizationUtils
 
 class Greedy:
     '''
@@ -37,14 +38,14 @@ class Greedy:
         for i in range(queue.shape[0]):
             if queue[i] not in visited:
                 return queue[i]
-    def solve_subgreedy(self, v: int, direction: str) -> Solution:
+    def solve_subgreedy(self, v: int, direction: str)-> Solution:
         '''
         method which applies subgreedy algorithm, saves solution into Solution object
         :param v: starting vertex
         :param direction: desired direction ('in' or 'out')
         '''
         # create solution object and init it with v
-        solution = Solution(direction)
+        solution = Solution(direction, self.graph.vertex_value_length)
         solution.id_list.append(v)
         solution.sequence = self.graph.oligonucleotides_list[v].value
         # create necessary variables and data structures
@@ -74,15 +75,16 @@ class Greedy:
     def solve_greedy(self):
         # randomize starting vertex
         start = np.random.randint(self.graph.vertices_no)
-        print(start)
         # perform subgreedy for both sides
         left_subgreedy = self.solve_subgreedy(start, 'in')
         right_subgreedy = self.solve_subgreedy(start, 'out')
         # merge
-        solution = Solution('bidirectional')
-        print(left_subgreedy)
-        print(right_subgreedy)
+        solution = Solution('bidirectional', self.graph.vertex_value_length)
         solution.id_list = left_subgreedy.id_list + right_subgreedy.id_list[1:]
         solution.sequence = left_subgreedy.sequence + right_subgreedy.sequence[1:]
         solution.overlaps = left_subgreedy.overlaps + right_subgreedy.overlaps
+        print(left_subgreedy.overlaps, OptimizationUtils.get_objective_value(left_subgreedy))
+        print(right_subgreedy.overlaps, OptimizationUtils.get_objective_value(right_subgreedy))
+        # TODO: document
+        # TODO: change greedy
         return solution
