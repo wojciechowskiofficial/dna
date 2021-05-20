@@ -2,6 +2,7 @@ from Graph import Graph
 from Solution import Solution
 import numpy as np
 from OptimizationUtils import OptimizationUtils
+import copy
 
 class Greedy:
     '''
@@ -82,13 +83,12 @@ class Greedy:
         # perform subgreedy for both sides
         left_subgreedy = self.solve_subgreedy(start, 'in')
         right_subgreedy = self.solve_subgreedy(start, 'out')
-        # merge
-        solution = Solution('bidirectional', self.graph.vertex_value_length)
-        solution.id_list = left_subgreedy.id_list + right_subgreedy.id_list[1:]
-        solution.sequence = left_subgreedy.sequence + right_subgreedy.sequence[1:]
-        solution.overlaps = left_subgreedy.overlaps + right_subgreedy.overlaps
-        print(left_subgreedy.overlaps, OptimizationUtils.get_objective_value(left_subgreedy))
-        print(right_subgreedy.overlaps, OptimizationUtils.get_objective_value(right_subgreedy))
-        # TODO: document
-        # TODO: change greedy
+        # compute objectives for both subgreedy outcomes
+        left_objective = OptimizationUtils.get_objective_value(left_subgreedy)
+        right_objective = OptimizationUtils.get_objective_value(right_subgreedy)
+        # compare and reject the weaker variant
+        if left_objective <= right_objective:
+            solution = copy.deepcopy(left_subgreedy)
+        else:
+            solution = copy.deepcopy(right_subgreedy)
         return solution
