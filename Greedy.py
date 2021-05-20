@@ -73,6 +73,10 @@ class Greedy:
             is_valid_candidates = self._valid_candidates_left(visited, candidates_queue)
         return solution
     def solve_greedy(self):
+        '''
+        method which applies subgreedy algorithm, saves solution into Solution object
+        :return: solution object
+        '''
         # randomize starting vertex
         start = np.random.randint(self.graph.vertices_no)
         # perform subgreedy for both sides
