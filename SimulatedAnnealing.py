@@ -17,7 +17,6 @@ class SimulatedAnnealing:
         '''
         method for creating neighbouring solution to a given solution
         by swaping two oligonucleotides with the smallest overlap
-        :param solution: Solution object, input solution
         :return: Solution object, input solution with two least overlapping vertices swapped
         '''
         # copy solution
@@ -43,30 +42,28 @@ class SimulatedAnnealing:
         return solution
     def _get_rand_swap_target(self):
         overlaps = np.asarray(self.solution.overlaps)
-        # argsort
-        argsorted = np.argsort(overlaps)
-        overlaps = np.sort(overlaps)
         # create overlap distribution histogram
         uniques = np.unique(overlaps, return_counts=True)
         hist_dict = {uniques[0][i] : uniques[1][i] for i in range(uniques[0].shape[0])}
         # do not consider the optimally connected pairs (with overlaps == l - 1)
         if self.solution.vertex_value_length - 1 in hist_dict.keys():
-            overlaps = overlaps[:- hist_dict[self.solution.vertex_value_length - 1]]
-            argsorted = argsorted[:- hist_dict[self.solution.vertex_value_length - 1]]
-        print(hist_dict)
+            del hist_dict[self.solution.vertex_value_length - 1]
+        # create a distribution by multiplying histogram over a geometric decay vector
         gen = iter(hist_dict.keys())
-        hist_dict = {key : hist_dict[key] * pow(1 / 2, next(gen)) / self.solution.vertex_value_length for key in hist_dict.keys()}
-        print(hist_dict)
+        hist_dict = {key : hist_dict[key] * pow(1 / 4, next(gen)) / self.solution.vertex_value_length for key in hist_dict.keys()}
+        # randomize overlap value
         keys = np.asarray(list(hist_dict.keys()))
         values = np.asarray(list(hist_dict.values()))
-        values = values / np.linalg.norm(values, ord=1)
-        print(np.cumsum(values))
-
-        pass
+        normalized_values = values / np.linalg.norm(values, ord=1)
+        chosen_overlap = np.random.choice(keys, p=normalized_values)
+        # randomize specific pair/specific overlap
+        considered_overlaps = np.where(overlaps == chosen_overlap)
+        overlap_id = np.random.choice(np.squeeze(np.asarray(considered_overlaps)))
+        return overlap_id
     def solve_sa(self):
         print(self.solution)
         print(self.obj(self.solution))
-        s = self._create_neighbour(np.argmin(self.solution.overlaps))
+        s = self._create_neighbour(int(np.argmin(self.solution.overlaps)))
         print(s)
         print(self.obj(s))
-        self._get_rand_swap_target()
+        print(self._get_rand_swap_target())
