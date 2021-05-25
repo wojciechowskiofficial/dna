@@ -49,7 +49,6 @@ class Graph:
         self.vertex_value_length = len(self.oligonucleotides_list[0].value)
         self.vertices_no = len(self.oligonucleotides_list)
     def _compute_metric(self, a: Vertex, b: Vertex):
-        # TODO: do the direction param
         '''
         method for computing metric used for weighting graph's arcs
         :param a: frist vertex
@@ -69,11 +68,11 @@ class Graph:
             # cut everything outside of potential overlap
             # then see if reminders are equal (these would be overlaps)
             if first[i:] == second[:l - i]:
-                # if yes, return l - (l - i) = i
-                return i
+                # if yes then return l - (l - i) = i
+                break
             i += 1
-        # returns 0 if no match at all
-        return 0
+        # returns i == l if no match at all
+        return i
     def create_graph_matrix(self):
         '''
         method for creating graph matrix.
