@@ -19,8 +19,4 @@ if __name__ == '__main__':
     greedy = Greedy(graph)
     s = greedy.solve_greedy()
     sa = SimulatedAnnealing(graph, s)
-    print(s)
-    print(OptimizationUtils.get_objective_value(s))
     sa.solve_sa()
-    print(sa.solution)
-    print(OptimizationUtils.get_objective_value(sa.solution))
