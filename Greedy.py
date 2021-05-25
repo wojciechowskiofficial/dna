@@ -17,7 +17,7 @@ class Greedy:
         :param direction: desired direction ('in' or 'out')
         :return: array of vertices with descending attractiveness
         '''
-        return np.flip(np.argsort(self.graph.get_vertex_neighbours(v, direction)))
+        return np.argsort(self.graph.get_vertex_neighbours(v, direction))
     def _valid_candidates_left(self, visited: set, queue: np.array) -> bool:
         '''
         method for checking the main subgreedy loop condition
@@ -47,7 +47,7 @@ class Greedy:
         '''
         # create solution object and init it with v
         solution = Solution(direction, self.graph.vertex_value_length)
-        solution.id_list.append(v)
+        solution.add_id(v)
         solution.sequence = self.graph.oligonucleotides_list[v].value
         # create necessary variables and data structures
         visited = {v}
