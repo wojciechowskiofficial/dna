@@ -33,14 +33,14 @@ class SimulatedAnnealing:
         # recalculate neighbouring overlaps
         # if the swapped pair was not the first one in the sequence
         if target > 0:
-            o = self.graph.compute_overlap(left_id - 1, left_id, 'out')
+            o = self.graph.compute_overlap(solution.id_list[target - 1], left_id, 'out')
             solution.overlaps[target - 1] = o
         # vertices from the original pair, always in the sequence
         o = self.graph.compute_overlap(left_id, right_id, 'out')
         solution.overlaps[target] = o
         # if the swapped pair was not the last one in the sequence
         if target + 1 < len(solution.id_list) - 1:
-            o = self.graph.compute_overlap(right_id, right_id + 1, 'out')
+            o = self.graph.compute_overlap(right_id, solution.id_list[target + 2], 'out')
             solution.overlaps[target + 1] = o
         return solution
     def _get_rand_swap_target(self):
