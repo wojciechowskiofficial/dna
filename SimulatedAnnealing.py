@@ -7,9 +7,11 @@ class SimulatedAnnealing:
     '''
     class which contains heuristic
     '''
-    def __init__(self, graph: Graph, solution: Solution):
+    def __init__(self, graph: Graph, solution: Solution, steps: int, init_temp: int):
         self.graph = graph
         self.solution = solution
+        self.steps = steps
+        self.init_temp = init_temp
         # abbreviate
         from OptimizationUtils import OptimizationUtils
         self.obj = OptimizationUtils.get_objective_value
@@ -17,6 +19,7 @@ class SimulatedAnnealing:
         '''
         method for creating neighbouring solution to a given solution
         by swaping two oligonucleotides with the smallest overlap
+        :param target: int, target overlap/vertex pair to swap
         :return: Solution object, input solution with two least overlapping vertices swapped
         '''
         # copy solution
@@ -41,6 +44,10 @@ class SimulatedAnnealing:
             solution.overlaps[target + 1] = o
         return solution
     def _get_rand_swap_target(self):
+        '''
+        method for choosing a new target for _create_neighbour method
+        :return: int, target
+        '''
         overlaps = np.asarray(self.solution.overlaps)
         # create overlap distribution histogram
         uniques = np.unique(overlaps, return_counts=True)
@@ -60,10 +67,32 @@ class SimulatedAnnealing:
         considered_overlaps = np.where(overlaps == chosen_overlap)
         overlap_id = np.random.choice(np.squeeze(np.asarray(considered_overlaps)))
         return overlap_id
+    def _P(self, delta_E: int, temp:int):
+        '''
+        the probability acceptance function.
+        if unif(0, 1) is < P then accept worse new solution
+        :param delta_E: int, E(s_new) - E(s)
+        :param temp: int, current temp = 10 / step
+        :return: float, normalized value for comparison with unif(0, 1)
+        '''
+        if delta_E < 0:
+            return 1.
+        else:
+            return np.exp(-1 * delta_E / temp) + .01
     def solve_sa(self):
-        print(self.solution)
-        print(self.obj(self.solution))
-        s = self._create_neighbour(int(np.argmin(self.solution.overlaps)))
-        print(s)
-        print(self.obj(s))
-        print(self._get_rand_swap_target())
+        '''
+        simulated annealing algorithm
+        :return: Solution, solution vector
+        '''
+        for step in range(self.steps):
+            target = self._get_rand_swap_target()
+            s_new = self._create_neighbour(target)
+            delta_E = self.obj(s_new) - self.obj(self.solution)
+            temp = 10. / (step + 1)
+            P = self._P(delta_E, temp)
+            if np.random.uniform(0, 1) < P:
+                print(self.obj(s_new))
+                print(self.obj(self.solution))
+                print(delta_E)
+                print('###')
+                self.solution = s_new
