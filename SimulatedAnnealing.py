@@ -23,7 +23,7 @@ class SimulatedAnnealing:
         :return: Solution object, input solution with two least overlapping vertices swapped
         '''
         # copy solution
-        solution = copy.copy(self.solution)
+        solution = copy.deepcopy(self.solution)
         # swap
         (solution.id_list[target], solution.id_list[target + 1]) = (solution.id_list[target + 1], solution.id_list[target])
         # assign vertex indices !!! to left_id and right_id
@@ -65,7 +65,11 @@ class SimulatedAnnealing:
         chosen_overlap = np.random.choice(keys, p=normalized_values)
         # randomize specific pair/specific overlap
         considered_overlaps = np.where(overlaps == chosen_overlap)
-        overlap_id = np.random.choice(np.squeeze(np.asarray(considered_overlaps)))
+        considered_overlaps = np.squeeze(np.asarray(considered_overlaps))
+        # for numpy shape requirements
+        if considered_overlaps.shape == tuple():
+            considered_overlaps = np.asarray([considered_overlaps])
+        overlap_id = np.random.choice(considered_overlaps)
         return overlap_id
     def _P(self, delta_E: int, temp:int):
         '''
@@ -84,13 +88,16 @@ class SimulatedAnnealing:
         simulated annealing algorithm
         :return: Solution, solution vector
         '''
+        print(self.solution)
         for step in range(self.steps):
             target = self._get_rand_swap_target()
             s_new = self._create_neighbour(target)
             delta_E = self.obj(s_new) - self.obj(self.solution)
             temp = 10. / (step + 1)
             P = self._P(delta_E, temp)
-            if np.random.uniform(0, 1) < P:
+            #if np.random.uniform(0, 1) < P:
+            print(target)
+            if delta_E < 0:
                 print(self.obj(s_new))
                 print(self.obj(self.solution))
                 print(delta_E)
