@@ -18,9 +18,7 @@ if __name__ == '__main__':
     graph.create_graph_matrix()
     greedy = Greedy(graph)
     s = greedy.solve_greedy()
-    #print(s)
-    #print(OptimizationUtils.get_objective_value(s))
-    sa = SimulatedAnnealing(graph, solution=s, steps=1000, init_temp=10)
+    n = 209
+    sa = SimulatedAnnealing(graph, solution=s, steps=1000, init_temp=10, n=n)
     sa.solve_sa()
-    #print(sa.solution)
-    #print(OptimizationUtils.get_objective_value(sa.solution))
+    print('K: ', len(sa.solution.id_list), ' N: ', n)

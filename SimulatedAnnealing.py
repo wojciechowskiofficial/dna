@@ -7,14 +7,16 @@ class SimulatedAnnealing:
     '''
     class which contains heuristic
     '''
-    def __init__(self, graph: Graph, solution: Solution, steps: int, init_temp: int):
+    def __init__(self, graph: Graph, solution: Solution, steps: int, init_temp: int, n: int):
         self.graph = graph
         self.solution = solution
         self.steps = steps
         self.init_temp = init_temp
+        self.n = n
         # abbreviate
         from OptimizationUtils import OptimizationUtils
         self.obj = OptimizationUtils.get_objective_value
+        self.less_than_n = OptimizationUtils.get_less_than_n
     def _create_neighbour(self, target: int):
         '''
         method for creating neighbouring solution to a given solution
@@ -57,7 +59,7 @@ class SimulatedAnnealing:
             del hist_dict[self.solution.vertex_value_length - 1]
         # create a distribution by multiplying histogram over a geometric decay vector
         gen = iter(hist_dict.keys())
-        hist_dict = {key : hist_dict[key] * pow(1 / 4, next(gen)) / self.solution.vertex_value_length for key in hist_dict.keys()}
+        hist_dict = {key : hist_dict[key] * pow(1 / 4, next(gen)) for key in hist_dict.keys()}
         # randomize overlap value
         keys = np.asarray(list(hist_dict.keys()))
         values = np.asarray(list(hist_dict.values()))
@@ -88,18 +90,14 @@ class SimulatedAnnealing:
         simulated annealing algorithm
         :return: Solution, solution vector
         '''
-        print(self.solution)
         for step in range(self.steps):
             target = self._get_rand_swap_target()
+            #target = np.random.choice(len(self.solution.overlaps))
             s_new = self._create_neighbour(target)
             delta_E = self.obj(s_new) - self.obj(self.solution)
             temp = 10. / (step + 1)
             P = self._P(delta_E, temp)
             #if np.random.uniform(0, 1) < P:
-            print(target)
             if delta_E < 0:
-                print(self.obj(s_new))
-                print(self.obj(self.solution))
-                print(delta_E)
-                print('###')
                 self.solution = s_new
+        self.solution = self.less_than_n(graph=self.graph, solution=self.solution, n=self.n)
